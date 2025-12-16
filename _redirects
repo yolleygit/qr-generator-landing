@@ -1,0 +1,8 @@
+# Cloudflare Pages Redirects 配置
+
+# SPA 路由支持 - 所有路径都指向 index.html
+/*    /index.html   200
+
+# 安全重定向
+/admin/*  https://github.com/yolleygit/qr-generator-landing  301
+/api/*    https://github.com/yolleygit/qr-generator-landing  301

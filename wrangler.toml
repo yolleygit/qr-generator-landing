@@ -1,0 +1,23 @@
+# Cloudflare Pages 配置文件
+name = "qr-generator-landing"
+compatibility_date = "2024-12-16"
+
+[env.production]
+# 生产环境配置
+compatibility_date = "2024-12-16"
+
+[build]
+# 构建配置
+command = "npm run build"
+cwd = "."
+watch_dir = "src"
+
+[build.upload]
+# 上传配置
+format = "modules"
+dir = "dist"
+main = "./dist/index.html"
+
+# 环境变量 (如果需要)
+[vars]
+NODE_ENV = "production"
