@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Cloudflare Preflight Hook",
+  "description": "Automatically detects whether project should deploy to Cloudflare Pages or Workers, runs build validation, and generates deployment report requiring manual approval before proceeding",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "You are a senior DevOps/Frontend deployment engineer. Execute the Cloudflare deployment preflight check:\n\n1. **Environment Check**: Verify node/pnpm versions and print them\n2. **Dependency Installation**: Run `pnpm install` (skip if lockfile exists and cache is valid)\n3. **Build Process**: Execute `pnpm run build` and capture exit code\n4. **Deployment Detection** (priority order):\n   - A. If next.config.js/ts exists with `output: \"export\"` AND build creates non-empty `out/` → Pages (static)\n   - B. If wrangler.toml/jsonc exists with `main` or `assets.directory` → Workers\n   - C. If both A+B: Output conflict warning with options, require user choice\n   - D. If neither: Detection failed, output fix suggestions\n\n5. **Generate Preflight Report** including:\n   - Detection result: Pages/Workers/Conflict/Failed\n   - Build artifacts check: out/ existence, file count, size\n   - Wrangler config analysis: name, main, assets.directory, compatibility_date\n   - Recommended deploy command\n   - Risk warnings\n\n6. **Change Plan** (if repo modifications needed):\n   - File list with diffs\n   - Rationale for each change\n   - Expected behavior after changes\n\n7. **Approval Gate**: \n   - Clearly prompt for \"批准/Approve\" or \"拒绝/Cancel\"\n   - Only generate git commands after approval\n   - If rejected, provide alternatives\n\n8. **Script Generation**: Create `scripts/cf-preflight.mjs` Node.js script\n9. **Integration Guide**: Show package.json scripts and Kiro hook setup\n\nOutput must be step-by-step, beginner-friendly. Exit non-zero on detection/build failures. Wait for explicit approval before any git operations."
+  }
+}
